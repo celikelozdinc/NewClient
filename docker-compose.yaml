@@ -1,0 +1,13 @@
+version: "3"
+services:
+  smoc4:
+    build:
+      context: .
+      dockerfile: newclient/Dockerfile
+    networks:
+      - distributedWan
+    hostname: smoc4
+networks:
+  distributedWan:
+    external:
+      name: loadbalancer_isolatedNetwork
