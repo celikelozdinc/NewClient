@@ -9,14 +9,11 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.stereotype.Service;
 import tr.edu.itu.bbf.cloudcore.distributed.entity.Events;
 import tr.edu.itu.bbf.cloudcore.distributed.entity.States;
-import tr.edu.itu.bbf.cloudcore.distributed.ipc.IpcMessage;
+import tr.edu.itu.bbf.cloudcore.distributed.ipc.CkptMessage;
 
 import javax.annotation.PostConstruct;
-import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Hashtable;
-import java.util.Scanner;
 
 @Service
 public class StateMachineWorker {
@@ -55,7 +52,7 @@ public class StateMachineWorker {
         String hostname = System.getenv("HOSTNAME");
         logger.info("********* Ip Addr of sender = {}",ipAddr);
         logger.info("********* Hostname of sender  = {}",hostname);
-        IpcMessage msg = new IpcMessage();
+        CkptMessage msg = new CkptMessage();
         msg.setHostname(hostname);
         msg.setIpAddr(ipAddr);
         String reply = (String) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC1,"rpc",msg);

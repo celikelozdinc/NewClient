@@ -14,7 +14,6 @@ public class RabbitConfig {
     @Value("${CKPT_EXCHANGE_SMOC2}")
     private String CKPT_EXCHANGE_SMOC2;
 
-
     @Value("${CKPT_EXCHANGE_SMOC3}")
     private String CKPT_EXCHANGE_SMOC3;
 
