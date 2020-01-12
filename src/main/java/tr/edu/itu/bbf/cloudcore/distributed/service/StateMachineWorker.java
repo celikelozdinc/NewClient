@@ -88,8 +88,12 @@ public class StateMachineWorker {
     @SuppressWarnings("unchecked")
     public StateMachineContext<States, Events> deserializeStateMachineContext(String reply) throws UnsupportedEncodingException {
         Kryo kryo = kryoThreadLocal.get();
+        /*
         Base64.Decoder decoder = Base64.getDecoder();
         ByteArrayInputStream in = new ByteArrayInputStream(Base64.getDecoder().decode(reply));
+
+         */
+        ByteArrayInputStream in = new ByteArrayInputStream(reply.getBytes());
         Input input = new Input(in);
         return kryo.readObject(input, StateMachineContext.class);
     }
