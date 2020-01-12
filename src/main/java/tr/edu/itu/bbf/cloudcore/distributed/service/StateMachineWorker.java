@@ -102,6 +102,8 @@ public class StateMachineWorker {
         logger.info("ByteArrayInputStream = {} ",in);
         Input input = new Input(in);
         logger.info("Input = {}",input);
+        Object o = kryo.readObject(input,StateMachineContext.class);
+        logger.info("Object is = {}",o);
         return kryo.readObject(input, StateMachineContext.class);
     }
 }
