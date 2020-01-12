@@ -87,6 +87,10 @@ public class StateMachineWorker {
 
     @SuppressWarnings("unchecked")
     public StateMachineContext<States, Events> deserializeStateMachineContext(String reply) throws UnsupportedEncodingException {
+        if (reply == null || reply.length() == 0) {
+            logger.info("_____ REPLY is NULL _____");
+            return null;
+        }
         Kryo kryo = kryoThreadLocal.get();
         /*
         Base64.Decoder decoder = Base64.getDecoder();
