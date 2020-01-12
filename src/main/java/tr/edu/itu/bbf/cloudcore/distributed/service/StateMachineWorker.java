@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import tr.edu.itu.bbf.cloudcore.distributed.entity.Events;
 import tr.edu.itu.bbf.cloudcore.distributed.entity.States;
 import tr.edu.itu.bbf.cloudcore.distributed.ipc.CkptMessage;
-
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.net.InetAddress;
@@ -88,7 +87,7 @@ public class StateMachineWorker {
     public StateMachineContext<States, Events> deserializeStateMachineContext(String reply){
         Kryo kryo = kryoThreadLocal.get();
         //Base64.getEncoder().encodeToString(baos.toByteArray());
-        byte[] decodedString = Base64.getDecoder().decode(reply);
+        byte[] decodedString = Base64.getDecoder().decode(reply.getBytes());
         ByteArrayInputStream in = new ByteArrayInputStream(decodedString);
         Input input = new Input(in);
         return kryo.readObject(input, StateMachineContext.class);
