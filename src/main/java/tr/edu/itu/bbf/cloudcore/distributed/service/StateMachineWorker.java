@@ -86,8 +86,8 @@ public class StateMachineWorker {
     }
 
     @SuppressWarnings("unchecked")
-    public StateMachineContext<States, Events> deserializeStateMachineContext(String reply) throws UnsupportedEncodingException {
-        if (reply == null || reply.length() == 0) {
+    public StateMachineContext<States, Events> deserializeStateMachineContext(byte[] reply) throws UnsupportedEncodingException {
+        if (reply == null || reply.length == 0) {
             logger.info("_____ REPLY is NULL _____");
             return null;
         }
@@ -98,7 +98,7 @@ public class StateMachineWorker {
         ByteArrayInputStream in = new ByteArrayInputStream(Base64.getDecoder().decode(reply));
 
          */
-        ByteArrayInputStream in = new ByteArrayInputStream(reply.getBytes());
+        ByteArrayInputStream in = new ByteArrayInputStream(reply);
         logger.info("ByteArrayInputStream = {} ",in);
         Input input = new Input(in);
         logger.info("Input = {}",input);
