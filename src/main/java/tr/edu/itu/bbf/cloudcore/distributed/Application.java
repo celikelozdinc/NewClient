@@ -45,7 +45,7 @@ public class Application implements CommandLineRunner {
             logger.info("********* Response from receiver = {}",reply);
             StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply);
             logger.info("********* Deserialize context = {}",context.getState().toString());
-        } catch (UnknownHostException | UnsupportedEncodingException e) {
+        } catch (UnknownHostException e) {
             e.printStackTrace();
         }
 
