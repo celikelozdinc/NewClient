@@ -91,7 +91,8 @@ public class StateMachineWorker {
         Input input = new Input();
         try {
             //Base64.getEncoder().encodeToString(baos.toByteArray());
-            byte[] decodedString = Base64.getDecoder().decode(reply.getBytes("UTF-8"));
+            //byte[] decodedString = Base64.getDecoder().decode(reply.getBytes("UTF-8"));
+            byte[] decodedString = reply.getBytes("UTF-8");
             ByteArrayInputStream in = new ByteArrayInputStream(decodedString);
             input = new Input(in);
         } catch (UnsupportedEncodingException e  ){
