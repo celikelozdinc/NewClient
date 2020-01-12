@@ -20,6 +20,7 @@ import tr.edu.itu.bbf.cloudcore.distributed.entity.States;
 import tr.edu.itu.bbf.cloudcore.distributed.ipc.CkptMessage;
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Base64;
@@ -84,12 +85,18 @@ public class StateMachineWorker {
         return reply;
     }
 
-    public StateMachineContext<States, Events> deserializeStateMachineContext(String reply){
+    @SuppressWarnings("unchecked")
+    public StateMachineContext<States, Events> deserializeStateMachineContext(String reply) throws UnsupportedEncodingException {
         Kryo kryo = kryoThreadLocal.get();
-        //Base64.getEncoder().encodeToString(baos.toByteArray());
-        byte[] decodedString = Base64.getDecoder().decode(reply.getBytes());
-        ByteArrayInputStream in = new ByteArrayInputStream(decodedString);
-        Input input = new Input(in);
+        Input input = new Input();
+        try {
+            //Base64.getEncoder().encodeToString(baos.toByteArray());
+            byte[] decodedString = Base64.getDecoder().decode(reply.getBytes("UTF-8"));
+            ByteArrayInputStream in = new ByteArrayInputStream(decodedString);
+            input = new Input(in);
+        } catch (UnsupportedEncodingException e  ){
+            e.printStackTrace();
+        }
         return kryo.readObject(input, StateMachineContext.class);
     }
 }

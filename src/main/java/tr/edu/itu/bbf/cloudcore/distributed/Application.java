@@ -19,6 +19,7 @@ import tr.edu.itu.bbf.cloudcore.distributed.entity.States;
 import tr.edu.itu.bbf.cloudcore.distributed.service.StateMachineWorker;
 
 import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
 import java.util.Base64;
 import java.util.UUID;
@@ -44,7 +45,7 @@ public class Application implements CommandLineRunner {
             logger.info("********* Response from receiver = {}",reply);
             StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply);
             logger.info("********* Deserialize context = {}",context.getState().toString());
-        } catch (UnknownHostException e) {
+        } catch (UnknownHostException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
