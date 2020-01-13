@@ -43,8 +43,8 @@ public class Application implements CommandLineRunner {
         try {
             String reply = worker.startCommunication();
             logger.info("********* Response from receiver = {}",reply);
-            //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply);
-            StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply.getBytes());
+            StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply);
+            //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply.getBytes());
             logger.info("********* Deserialize context = {}",context.getState().toString());
         } catch (UnknownHostException | UnsupportedEncodingException e) {
             e.printStackTrace();

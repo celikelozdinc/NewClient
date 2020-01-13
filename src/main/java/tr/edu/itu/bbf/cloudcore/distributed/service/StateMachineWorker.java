@@ -15,6 +15,7 @@ import org.springframework.statemachine.kryo.MessageHeadersSerializer;
 import org.springframework.statemachine.kryo.StateMachineContextSerializer;
 import org.springframework.statemachine.kryo.UUIDSerializer;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import tr.edu.itu.bbf.cloudcore.distributed.entity.Events;
 import tr.edu.itu.bbf.cloudcore.distributed.entity.States;
 import tr.edu.itu.bbf.cloudcore.distributed.ipc.CkptMessage;
@@ -86,18 +87,21 @@ public class StateMachineWorker {
     }
 
     @SuppressWarnings("unchecked")
-    public StateMachineContext<States, Events> deserializeStateMachineContext(byte[] reply) throws UnsupportedEncodingException {
-        if (reply == null || reply.length == 0) {
+    public StateMachineContext<States, Events> deserializeStateMachineContext(String reply) throws UnsupportedEncodingException {
+        if (StringUtils.isEmpty(reply)) {
             logger.info("_____ REPLY is NULL _____");
             return null;
         }
         logger.info("_____ REPLY is not NULL _____");
         Kryo kryo = kryoThreadLocal.get();
-        /*
-        Base64.Decoder decoder = Base64.getDecoder();
-        ByteArrayInputStream in = new ByteArrayInputStream(Base64.getDecoder().decode(reply));
+        Base64.Decoder decoder = Base64.getMimeDecoder();
+        ByteArrayInputStream in = new ByteArrayInputStream(decoder.decode(reply));
+        logger.info("ByteArrayInputStream = {} ",in);
+        Input input = new Input(in);
+        logger.info("Input = {}",input);
+        return kryo.readObject(input, StateMachineContext.class);
 
-         */
+        /*
         ByteArrayInputStream in = new ByteArrayInputStream(reply);
         logger.info("ByteArrayInputStream = {} ",in);
         Input input = new Input(in);
@@ -105,5 +109,7 @@ public class StateMachineWorker {
         Object o = kryo.readObject(input,StateMachineContext.class);
         logger.info("Object is = {}",o);
         return kryo.readObject(input, StateMachineContext.class);
+
+         */
     }
 }
