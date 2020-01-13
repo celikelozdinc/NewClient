@@ -87,7 +87,7 @@ public class StateMachineWorker {
     }
 
     @SuppressWarnings("unchecked")
-    public StateMachineContext<States, Events> deserializeStateMachineContext(String reply) throws UnsupportedEncodingException {
+    public StateMachineContext<States, Events> deserializeStateMachineContext(String reply) {
         if (StringUtils.isEmpty(reply)) {
             logger.info("_____ REPLY is NULL _____");
             return null;
@@ -95,7 +95,8 @@ public class StateMachineWorker {
         logger.info("_____ REPLY is not NULL _____");
         Kryo kryo = kryoThreadLocal.get();
         //Base64.Decoder decoder = Base64.getMimeDecoder();
-        Base64.Decoder decoder = Base64.getDecoder();
+        //Base64.Decoder decoder = Base64.getDecoder();
+        Base64.Decoder decoder = Base64.getUrlDecoder();
         ByteArrayInputStream in = new ByteArrayInputStream(decoder.decode(reply));
         logger.info("ByteArrayInputStream = {} ",in);
         Input input = new Input(in);
