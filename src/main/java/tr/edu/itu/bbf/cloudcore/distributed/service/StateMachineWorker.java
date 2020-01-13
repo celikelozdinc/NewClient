@@ -94,7 +94,8 @@ public class StateMachineWorker {
         }
         logger.info("_____ REPLY is not NULL _____");
         Kryo kryo = kryoThreadLocal.get();
-        Base64.Decoder decoder = Base64.getMimeDecoder();
+        //Base64.Decoder decoder = Base64.getMimeDecoder();
+        Base64.Decoder decoder = Base64.getDecoder();
         ByteArrayInputStream in = new ByteArrayInputStream(decoder.decode(reply));
         logger.info("ByteArrayInputStream = {} ",in);
         Input input = new Input(in);
