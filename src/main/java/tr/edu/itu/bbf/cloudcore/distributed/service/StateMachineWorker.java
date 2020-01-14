@@ -26,6 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -83,9 +84,9 @@ public class StateMachineWorker {
         CkptMessage msg = new CkptMessage();
         msg.setHostname(hostname);
         msg.setIpAddr(ipAddr);
-        Response response = (Response) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC1,"rpc",msg);
-        logger.info("********* Response from receiver = {}-->{}--{}",response.getSourceState(),response.getProcessedEvent(),response.getDestinationState());
-        return response;
+        ArrayList<Response> responseArrayList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC1,"rpc",msg);
+        logger.info("********* Response from receiver = {}-->{}--{}",responseArrayList.get(0).getSourceState(),responseArrayList.get(0).getProcessedEvent(),responseArrayList.get(0).getDestinationState());
+        return responseArrayList.get(0);
     }
 
     @SuppressWarnings("unchecked")
