@@ -19,6 +19,8 @@ import org.springframework.util.StringUtils;
 import tr.edu.itu.bbf.cloudcore.distributed.entity.Events;
 import tr.edu.itu.bbf.cloudcore.distributed.entity.States;
 import tr.edu.itu.bbf.cloudcore.distributed.ipc.CkptMessage;
+import tr.edu.itu.bbf.cloudcore.distributed.ipc.Response;
+
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
@@ -72,7 +74,7 @@ public class StateMachineWorker {
         logger.info("SMOC __{}__ is started. From now on, events can be processed.",stateMachine.getUuid().toString());
     }
 
-    public String startCommunication() throws UnknownHostException {
+    public Response startCommunication() throws UnknownHostException {
         logger.info("********* StateMachineWorker::startCommunication()");
         String ipAddr = InetAddress.getLocalHost().getHostAddress();
         String hostname = System.getenv("HOSTNAME");
@@ -81,9 +83,9 @@ public class StateMachineWorker {
         CkptMessage msg = new CkptMessage();
         msg.setHostname(hostname);
         msg.setIpAddr(ipAddr);
-        String reply = (String) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC1,"rpc",msg);
-        logger.info("********* Response from receiver = {}",reply);
-        return reply;
+        Response response = (Response) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC1,"rpc",msg);
+        logger.info("********* Response from receiver = {}-->{}--{}",response.getSourceState(),response.getProcessedEvent(),response.getDestinationState());
+        return response;
     }
 
     @SuppressWarnings("unchecked")
@@ -97,7 +99,8 @@ public class StateMachineWorker {
         //Base64.Decoder decoder = Base64.getMimeDecoder();
         Base64.Decoder decoder = Base64.getDecoder();
         //Base64.Decoder decoder = Base64.getUrlDecoder();
-        ByteArrayInputStream in = new ByteArrayInputStream(decoder.decode(reply.replace("\n","").replace("\r","")));
+        ByteArrayInputStream in = new ByteArrayInputStream(decoder.decode(reply));
+        //ByteArrayInputStream in = new ByteArrayInputStream(decoder.decode(reply.replace("\n","").replace("\r","")));
         //ByteArrayInputStream in = new ByteArrayInputStream(decoder.decode(reply));
         logger.info("ByteArrayInputStream = {} ",in);
         Input input = new Input(in);

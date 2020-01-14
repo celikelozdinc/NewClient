@@ -1,7 +1,5 @@
 package tr.edu.itu.bbf.cloudcore.distributed;
 
-import com.esotericsoftware.kryo.Kryo;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,21 +7,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.statemachine.StateMachineContext;
-import org.springframework.statemachine.kryo.MessageHeadersSerializer;
-import org.springframework.statemachine.kryo.StateMachineContextSerializer;
-import org.springframework.statemachine.kryo.UUIDSerializer;
-import tr.edu.itu.bbf.cloudcore.distributed.entity.Events;
-import tr.edu.itu.bbf.cloudcore.distributed.entity.States;
+import tr.edu.itu.bbf.cloudcore.distributed.ipc.Response;
 import tr.edu.itu.bbf.cloudcore.distributed.service.StateMachineWorker;
 
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
+
 import java.net.UnknownHostException;
-import java.util.Base64;
-import java.util.UUID;
-import com.esotericsoftware.kryo.io.Input;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"tr.edu.itu.bbf.cloudcore.distributed"})
@@ -41,11 +29,11 @@ public class Application implements CommandLineRunner {
         /* Read CKPT information from other smocs */
 
         try {
-            String reply = worker.startCommunication();
-            logger.info("********* Response from receiver = {}",reply);
-            StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply);
+            Response response = worker.startCommunication();
+            logger.info("********* Response from receiver = {}-->{}--{}",response.getSourceState(),response.getProcessedEvent(),response.getDestinationState());
+            //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply);
             //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply.getBytes());
-            logger.info("********* Deserialize context = {}",context.getState().toString());
+            //logger.info("********* Deserialize context = {}",context.getState().toString());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
