@@ -75,7 +75,7 @@ public class StateMachineWorker {
         logger.info("SMOC __{}__ is started. From now on, events can be processed.",stateMachine.getUuid().toString());
     }
 
-    public Response startCommunication() throws UnknownHostException {
+    public void startCommunication() throws UnknownHostException {
         logger.info("********* StateMachineWorker::startCommunication()");
         String ipAddr = InetAddress.getLocalHost().getHostAddress();
         String hostname = System.getenv("HOSTNAME");
@@ -84,9 +84,12 @@ public class StateMachineWorker {
         CkptMessage msg = new CkptMessage();
         msg.setHostname(hostname);
         msg.setIpAddr(ipAddr);
-        ArrayList<Response> responseArrayList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC1,"rpc",msg);
-        logger.info("Count of ckpts stored by smoc --> {}",responseArrayList.size());
-        return responseArrayList.get(0);
+        ArrayList<Response> smoc1CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC1,"rpc",msg);
+        logger.info("Count of ckpts stored by smoc1 --> {}",smoc1CkptList.size());
+        ArrayList<Response> smoc2CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC2,"rpc",msg);
+        logger.info("Count of ckpts stored by smoc2 --> {}",smoc2CkptList.size());
+        ArrayList<Response> smoc3CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC3,"rpc",msg);
+        logger.info("Count of ckpts stored by smoc3 --> {}",smoc3CkptList.size());
     }
 
     @SuppressWarnings("unchecked")

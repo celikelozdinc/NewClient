@@ -29,8 +29,7 @@ public class Application implements CommandLineRunner {
         /* Read CKPT information from other smocs */
 
         try {
-            Response response = worker.startCommunication();
-            logger.info("********* Response from receiver = {}-->{}--{}",response.getSourceState(),response.getProcessedEvent(),response.getDestinationState());
+            worker.startCommunication();
             //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply);
             //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply.getBytes());
             //logger.info("********* Deserialize context = {}",context.getState().toString());
