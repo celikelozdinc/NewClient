@@ -85,7 +85,7 @@ public class StateMachineWorker {
         msg.setHostname(hostname);
         msg.setIpAddr(ipAddr);
         ArrayList<Response> responseArrayList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC1,"rpc",msg);
-        logger.info("********* Response from receiver = {}-->{}--{}",responseArrayList.get(0).getSourceState(),responseArrayList.get(0).getProcessedEvent(),responseArrayList.get(0).getDestinationState());
+        logger.info("Count of ckpts stored by smoc --> {}",responseArrayList.size());
         return responseArrayList.get(0);
     }
 
