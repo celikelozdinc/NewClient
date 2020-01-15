@@ -121,6 +121,10 @@ public class StateMachineWorker {
         }
         logger.info("Size of ordered ckpts -> {}",sequentialCktps.size());
 
+        for(Response response:sequentialCktps){
+            logger.warn("{}.event: {} --> {} --> {}",response.getEventNumber(),response.getSourceState(),response.getProcessedEvent(),response.getDestinationState());
+        }
+
     }
 
     @SuppressWarnings("unchecked")
