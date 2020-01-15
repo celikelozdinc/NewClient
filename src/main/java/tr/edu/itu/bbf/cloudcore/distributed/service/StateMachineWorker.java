@@ -48,6 +48,9 @@ public class StateMachineWorker {
     @Value("${CKPT_EXCHANGE_SMOC3}")
     private String CKPT_EXCHANGE_SMOC3;
 
+    private ArrayList<Response> mixedCkpts;
+    private ArrayList<Response> sequentialCktps;
+
     private static final ThreadLocal<Kryo> kryoThreadLocal = new ThreadLocal<Kryo>() {
         @NotNull
         @SuppressWarnings("rawtypes")
@@ -73,6 +76,8 @@ public class StateMachineWorker {
         logger.info("+++++StateMachineWorker::PostConstruct+++++");
         stateMachine.start();
         logger.info("SMOC __{}__ is started. From now on, events can be processed.",stateMachine.getUuid().toString());
+        mixedCkpts = new ArrayList<Response>();
+        sequentialCktps = new ArrayList<Response>();
     }
 
     public void startCommunication() throws UnknownHostException {
@@ -84,12 +89,38 @@ public class StateMachineWorker {
         CkptMessage msg = new CkptMessage();
         msg.setHostname(hostname);
         msg.setIpAddr(ipAddr);
+
         ArrayList<Response> smoc1CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC1,"rpc",msg);
         logger.info("Count of ckpts stored by smoc1 --> {}",smoc1CkptList.size());
+        mixedCkpts.addAll(smoc1CkptList);
+
         ArrayList<Response> smoc2CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC2,"rpc",msg);
         logger.info("Count of ckpts stored by smoc2 --> {}",smoc2CkptList.size());
+        mixedCkpts.addAll(smoc2CkptList);
+
         ArrayList<Response> smoc3CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC3,"rpc",msg);
         logger.info("Count of ckpts stored by smoc3 --> {}",smoc3CkptList.size());
+        mixedCkpts.addAll(smoc3CkptList);
+
+        logger.info("Count of ckpts stored by all smocs --> {}",mixedCkpts.size());
+    }
+
+    public void prepareCkpts(){
+
+        Integer size = mixedCkpts.size();
+
+        for(int event=1 ; event<=size; event++){
+            logger.info("Searching for event {} is started ...",event);
+            for(Response response: mixedCkpts){
+                if(response.getEventNumber() == event){
+                    logger.info("Eventnumber {} is found",event);
+                    sequentialCktps.add(response);
+                }
+            }
+            logger.info("Searching for event {} is finished ...",event);
+        }
+        logger.info("Size of ordered ckpts -> {}",sequentialCktps.size());
+
     }
 
     @SuppressWarnings("unchecked")

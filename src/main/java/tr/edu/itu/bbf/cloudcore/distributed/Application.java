@@ -30,6 +30,7 @@ public class Application implements CommandLineRunner {
 
         try {
             worker.startCommunication();
+            worker.prepareCkpts();
             //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply);
             //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply.getBytes());
             //logger.info("********* Deserialize context = {}",context.getState().toString());
