@@ -31,10 +31,13 @@ public class Application implements CommandLineRunner {
         try {
             worker.startCommunication();
             worker.prepareCkpts();
+            worker.applyCkpts();
             //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply);
             //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply.getBytes());
             //logger.info("********* Deserialize context = {}",context.getState().toString());
         } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

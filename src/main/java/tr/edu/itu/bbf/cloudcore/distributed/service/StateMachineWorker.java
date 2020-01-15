@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.StateMachineContext;
 import org.springframework.statemachine.kryo.MessageHeadersSerializer;
@@ -127,6 +129,33 @@ public class StateMachineWorker {
 
     }
 
+    public void applyCkpts() throws Exception {
+        for(Response response: sequentialCktps){
+            String event = response.getProcessedEvent();
+            switch(event){
+                case "Pay": case "pay": case "PAY":
+                    System.out.print("\n\n\n\n\n");
+                    sendPayEvent(event,1000);
+                    System.out.print("\n\n\n\n\n");
+                    break;
+                case "Receive": case "receive": case "RECEIVE":
+                    System.out.print("\n\n\n\n\n");
+                    sendReceiveEvent(event,1000);
+                    System.out.print("\n\n\n\n\n");
+                    break;
+                case "StartFromScratch": case "startfromscratch": case"STARTFROMSCRATCH":
+                    System.out.print("\n\n\n\n\n");
+                    sendStartFromScratchEvent(event,1000);
+                    System.out.print("\n\n\n\n\n");
+                    break;
+                default:
+                    System.out.println("Please send one of the events below.");
+                    System.out.println("Pay/Receive/StartFromScratch");
+                    break;
+            }
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public StateMachineContext<States, Events> deserializeStateMachineContext(String reply) {
         if (StringUtils.isEmpty(reply)) {
@@ -157,4 +186,41 @@ public class StateMachineWorker {
 
          */
     }
+
+    public void sendPayEvent(@NotNull String event, int timeSleep)throws Exception {
+        Message<Events> messagePay = MessageBuilder
+                .withPayload(Events.PAY)
+                .setHeader("timeSleep", timeSleep)
+                .setHeader("machineId", stateMachine.getUuid())
+                .setHeader("source", "UNPAID")
+                .setHeader("processedEvent", event)
+                .setHeader("target", "WAITING_FOR_RECEIVE")
+                .build();
+        stateMachine.sendEvent(messagePay);
+    }
+
+    public void sendReceiveEvent(@NotNull String event, int timeSleep) throws Exception {
+        Message<Events> messageReceive = MessageBuilder
+                .withPayload(Events.RECEIVE)
+                .setHeader("timeSleep", timeSleep)
+                .setHeader("machineId", stateMachine.getUuid())
+                .setHeader("source", "WAITING_FOR_RECEIVE")
+                .setHeader("processedEvent", event)
+                .setHeader("target", "DONE")
+                .build();
+        stateMachine.sendEvent(messageReceive);
+    }
+
+    public void sendStartFromScratchEvent(@NotNull String event, int timeSleep) throws Exception {
+        Message<Events> messageStartFromScratch = MessageBuilder
+                .withPayload(Events.STARTFROMSCRATCH)
+                .setHeader("timeSleep", timeSleep)
+                .setHeader("machineId", stateMachine.getUuid())
+                .setHeader("source", "DONE")
+                .setHeader("processedEvent", event)
+                .setHeader("target", "UNPAID")
+                .build();
+        stateMachine.sendEvent(messageStartFromScratch);
+    }
+
 }
