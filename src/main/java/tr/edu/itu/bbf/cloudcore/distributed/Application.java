@@ -28,13 +28,11 @@ public class Application implements CommandLineRunner {
 
         /* Read CKPT information from other smocs */
 
+        long startTime = System.currentTimeMillis();
         try {
-            long startTime = System.currentTimeMillis();
             worker.startCommunication();
             worker.prepareCkpts();
             worker.applyCkpts();
-            long endTime = System.currentTimeMillis();
-           logger.warn("Applying all CKPTs took " + (endTime - startTime) + " milliseconds");
             //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply);
             //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply.getBytes());
             //logger.info("********* Deserialize context = {}",context.getState().toString());
@@ -43,6 +41,8 @@ public class Application implements CommandLineRunner {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        long endTime = System.currentTimeMillis();
+        logger.warn("Applying all CKPTs took " + (endTime - startTime) + " milliseconds");
 
     }
 
