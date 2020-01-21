@@ -135,17 +135,17 @@ public class StateMachineWorker {
             switch(event){
                 case "Pay": case "pay": case "PAY":
                     System.out.print("\n\n\n\n\n");
-                    sendPayEvent(event,1000);
+                    sendPayEvent(event,0);
                     System.out.print("\n\n\n\n\n");
                     break;
                 case "Receive": case "receive": case "RECEIVE":
                     System.out.print("\n\n\n\n\n");
-                    sendReceiveEvent(event,1000);
+                    sendReceiveEvent(event,0);
                     System.out.print("\n\n\n\n\n");
                     break;
                 case "StartFromScratch": case "startfromscratch": case"STARTFROMSCRATCH":
                     System.out.print("\n\n\n\n\n");
-                    sendStartFromScratchEvent(event,1000);
+                    sendStartFromScratchEvent(event,0);
                     System.out.print("\n\n\n\n\n");
                     break;
                 default:
