@@ -7,14 +7,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import tr.edu.itu.bbf.cloudcore.distributed.ipc.Response;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import tr.edu.itu.bbf.cloudcore.distributed.persist.CheckpointRepository;
 import tr.edu.itu.bbf.cloudcore.distributed.service.StateMachineWorker;
 
 
 import java.net.UnknownHostException;
 
 @SpringBootApplication
+@EnableMongoRepositories(basePackageClasses= CheckpointRepository.class)
 @ComponentScan(basePackages = {"tr.edu.itu.bbf.cloudcore.distributed"})
+@PropertySource(value={"classpath:application.properties"})
 public class Application implements CommandLineRunner {
 
     @Autowired
