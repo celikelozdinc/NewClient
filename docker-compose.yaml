@@ -1,6 +1,6 @@
 version: "3"
 services:
-  smoc8:
+  smoc16:
     build:
       context: .
       dockerfile: newclient/Dockerfile
