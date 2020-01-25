@@ -62,6 +62,30 @@ public class StateMachineWorker {
     @Value("${CKPT_EXCHANGE_SMOC7}")
     private String CKPT_EXCHANGE_SMOC7;
 
+    @Value("${CKPT_EXCHANGE_SMOC8}")
+    private String CKPT_EXCHANGE_SMOC8;
+
+    @Value("${CKPT_EXCHANGE_SMOC9}")
+    private String CKPT_EXCHANGE_SMOC9;
+
+    @Value("${CKPT_EXCHANGE_SMOC10}")
+    private String CKPT_EXCHANGE_SMOC10;
+
+    @Value("${CKPT_EXCHANGE_SMOC11}")
+    private String CKPT_EXCHANGE_SMOC11;
+
+    @Value("${CKPT_EXCHANGE_SMOC12}")
+    private String CKPT_EXCHANGE_SMOC12;
+
+    @Value("${CKPT_EXCHANGE_SMOC13}")
+    private String CKPT_EXCHANGE_SMOC13;
+
+    @Value("${CKPT_EXCHANGE_SMOC14}")
+    private String CKPT_EXCHANGE_SMOC14;
+
+    @Value("${CKPT_EXCHANGE_SMOC15}")
+    private String CKPT_EXCHANGE_SMOC15;
+
     private ArrayList<Response> mixedCkpts;
     private ArrayList<Response> sequentialCktps;
 
@@ -131,6 +155,38 @@ public class StateMachineWorker {
         ArrayList<Response> smoc7CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC7,"rpc",msg);
         logger.info("Count of ckpts stored by smoc7 --> {}",smoc7CkptList.size());
         mixedCkpts.addAll(smoc7CkptList);
+
+        ArrayList<Response> smoc8CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC8,"rpc",msg);
+        logger.info("Count of ckpts stored by smoc8 --> {}",smoc8CkptList.size());
+        mixedCkpts.addAll(smoc8CkptList);
+
+        ArrayList<Response> smoc9CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC9,"rpc",msg);
+        logger.info("Count of ckpts stored by smoc9 --> {}",smoc9CkptList.size());
+        mixedCkpts.addAll(smoc9CkptList);
+
+        ArrayList<Response> smoc10CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC10,"rpc",msg);
+        logger.info("Count of ckpts stored by smoc10 --> {}",smoc10CkptList.size());
+        mixedCkpts.addAll(smoc10CkptList);
+
+        ArrayList<Response> smoc11CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC11,"rpc",msg);
+        logger.info("Count of ckpts stored by smoc11 --> {}",smoc11CkptList.size());
+        mixedCkpts.addAll(smoc11CkptList);
+
+        ArrayList<Response> smoc12CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC12,"rpc",msg);
+        logger.info("Count of ckpts stored by smoc12 --> {}",smoc12CkptList.size());
+        mixedCkpts.addAll(smoc12CkptList);
+
+        ArrayList<Response> smoc13CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC13,"rpc",msg);
+        logger.info("Count of ckpts stored by smoc13 --> {}",smoc13CkptList.size());
+        mixedCkpts.addAll(smoc13CkptList);
+
+        ArrayList<Response> smoc14CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC14,"rpc",msg);
+        logger.info("Count of ckpts stored by smoc14 --> {}",smoc14CkptList.size());
+        mixedCkpts.addAll(smoc14CkptList);
+
+        ArrayList<Response> smoc15CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC15,"rpc",msg);
+        logger.info("Count of ckpts stored by smoc15 --> {}",smoc15CkptList.size());
+        mixedCkpts.addAll(smoc15CkptList);
 
         logger.info("Count of ckpts stored by all smocs --> {}",mixedCkpts.size());
     }
