@@ -13,6 +13,7 @@ import tr.edu.itu.bbf.cloudcore.distributed.persist.CheckpointRepository;
 import tr.edu.itu.bbf.cloudcore.distributed.service.StateMachineWorker;
 
 
+import java.lang.management.ManagementFactory;
 import java.net.UnknownHostException;
 
 @SpringBootApplication
@@ -46,7 +47,8 @@ public class Application implements CommandLineRunner {
             e.printStackTrace();
         }
         long endTime = System.currentTimeMillis();
-        logger.warn("Applying all CKPTs took " + (endTime - startTime) + " milliseconds");
+        logger.warn("Applied all CKPTs took " + (endTime - startTime) + " milliseconds");
+        logger.warn("PID@HOSTNAME is {}",ManagementFactory.getRuntimeMXBean().getName());
 
     }
 
