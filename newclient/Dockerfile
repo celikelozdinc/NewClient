@@ -37,7 +37,8 @@ ARG SPRINGBOOT_HOME=/opt/statemachineapp
 COPY out/artifacts/NewClient_jar/ $SPRINGBOOT_HOME/NewClient_jar/
 # Copy entrypoint script #
 COPY newclient/start_services.sh  $SPRINGBOOT_HOME/
-COPY newclient/duration_report.sh  $SPRINGBOOT_HOME/
 RUN chmod +x $SPRINGBOOT_HOME/start_services.sh
+# Copy reporting tools #
+COPY newclient/duration_report.sh  $SPRINGBOOT_HOME/
 RUN chmod +x $SPRINGBOOT_HOME/duration_report.sh
 WORKDIR $SPRINGBOOT_HOME
