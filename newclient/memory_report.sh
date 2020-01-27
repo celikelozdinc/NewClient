@@ -8,7 +8,7 @@ echo "PID is ""$current_pid"
 # Memory Report from /proc/<pid>/status
 # xargs will do trimming
 echo "Querying /proc/pid/status ..."
-VmSize=$(grep "VmSize" /proc/"$current_pid"/status | awk -F 'VmPeak:|kB' '{print $2}' | xargs)
+VmSize=$(grep "VmSize" /proc/"$current_pid"/status | awk -F 'VmSize:|kB' '{print $2}' | xargs)
 VmPeak=$(grep "VmPeak" /proc/"$current_pid"/status | awk -F 'VmPeak:|kB' '{print $2}' | xargs)
 echo "VmSize is ""$VmSize"
 echo "VmPeak is ""$VmPeak"
