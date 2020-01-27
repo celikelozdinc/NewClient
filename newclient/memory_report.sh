@@ -17,5 +17,5 @@ echo "VmPeak is ""$VmPeak"
 # -v for awk : define variable
 # -n for top : exit after n iteration
 echo "Querying top ..."
-from_top=$(top -n 1 | awk -v src="$current_pid" '$1 == search {print $5}' | cut -d'm' -f1)
+from_top=$(top -n 1 | awk -v search="$current_pid" '$1 == search {print $5}' | cut -d'm' -f1)
 echo "Current memory consumption is ""$from_top"
