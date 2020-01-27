@@ -2,7 +2,7 @@
 # Learn PID
 echo "Getting PID ..."
 current_pid=$(grep "PID" log | awk -F "PID@HOSTNAME is " '{print $2}') | cut -d'@' -f1
-echo "PID is ""current_pid"
+echo "PID is ""$current_pid"
 
 # Memory Report from /proc/<pid>/status
 # xargs will do trimming
