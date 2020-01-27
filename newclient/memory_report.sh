@@ -1,7 +1,8 @@
 #!/bin/bash
 # Learn PID
+# xargs will do trimming
 echo "Getting PID ..."
-current_pid=$(grep "PID" log | awk -F "PID@HOSTNAME is " '{print $2}') | cut -d'@' -f1
+current_pid=$(grep "PID" log | awk -F "PID@HOSTNAME is " '{print $2}') | cut -d'@' -f1 | xargs
 echo "PID is ""$current_pid"
 
 # Memory Report from /proc/<pid>/status
