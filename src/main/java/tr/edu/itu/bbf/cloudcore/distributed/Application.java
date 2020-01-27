@@ -48,7 +48,7 @@ public class Application implements CommandLineRunner {
         }
         long endTime = System.currentTimeMillis();
         float delta =((float) (endTime - startTime)/1000);
-        logger.warn("Applied all CKPTs in {} milliseconds",delta);
+        logger.warn("Applied all CKPTs in {} seconds",delta);
         logger.warn("PID@HOSTNAME is {}",ManagementFactory.getRuntimeMXBean().getName());
 
     }
