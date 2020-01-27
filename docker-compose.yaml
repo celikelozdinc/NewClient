@@ -1,12 +1,12 @@
 version: "3"
 services:
-  smoc4:
+  smoc12:
     build:
       context: .
       dockerfile: newclient/Dockerfile
     networks:
       - distributedWan
-    hostname: smoc4
+    hostname: smoc12
     environment:
       - CKPT_EXCHANGE_SMOC1=${SMOC1}
       - CKPT_EXCHANGE_SMOC2=${SMOC2}
