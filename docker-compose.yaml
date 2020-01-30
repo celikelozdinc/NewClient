@@ -1,12 +1,12 @@
 version: "3"
 services:
-  smoc12:
+  smoc16:
     build:
       context: .
       dockerfile: newclient/Dockerfile
     networks:
       - distributedWan
-    hostname: smoc12
+    hostname: smoc16
     environment:
       - CKPT_EXCHANGE_SMOC1=${SMOC1}
       - CKPT_EXCHANGE_SMOC2=${SMOC2}
@@ -19,10 +19,10 @@ services:
       - CKPT_EXCHANGE_SMOC9=${SMOC9}
       - CKPT_EXCHANGE_SMOC10=${SMOC10}
       - CKPT_EXCHANGE_SMOC11=${SMOC11}
-#      - CKPT_EXCHANGE_SMOC12=${SMOC12}
-#      - CKPT_EXCHANGE_SMOC13=${SMOC13}
-#      - CKPT_EXCHANGE_SMOC14=${SMOC14}
-#      - CKPT_EXCHANGE_SMOC15=${SMOC15}
+      - CKPT_EXCHANGE_SMOC12=${SMOC12}
+      - CKPT_EXCHANGE_SMOC13=${SMOC13}
+      - CKPT_EXCHANGE_SMOC14=${SMOC14}
+      - CKPT_EXCHANGE_SMOC15=${SMOC15}
 networks:
   distributedWan:
     external:
