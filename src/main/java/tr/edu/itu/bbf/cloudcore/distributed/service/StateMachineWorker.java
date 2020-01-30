@@ -50,7 +50,6 @@ public class StateMachineWorker {
     @Value("${CKPT_EXCHANGE_SMOC3}")
     private String CKPT_EXCHANGE_SMOC3;
 
-    /*
     @Value("${CKPT_EXCHANGE_SMOC4}")
     private String CKPT_EXCHANGE_SMOC4;
 
@@ -63,6 +62,7 @@ public class StateMachineWorker {
     @Value("${CKPT_EXCHANGE_SMOC7}")
     private String CKPT_EXCHANGE_SMOC7;
 
+    /*
     @Value("${CKPT_EXCHANGE_SMOC8}")
     private String CKPT_EXCHANGE_SMOC8;
 
@@ -142,7 +142,6 @@ public class StateMachineWorker {
         logger.info("Count of ckpts stored by smoc3 --> {}",smoc3CkptList.size());
         mixedCkpts.addAll(smoc3CkptList);
 
-        /*
         ArrayList<Response> smoc4CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC4,"rpc",msg);
         logger.info("Count of ckpts stored by smoc4 --> {}",smoc4CkptList.size());
         mixedCkpts.addAll(smoc4CkptList);
@@ -159,6 +158,7 @@ public class StateMachineWorker {
         logger.info("Count of ckpts stored by smoc7 --> {}",smoc7CkptList.size());
         mixedCkpts.addAll(smoc7CkptList);
 
+        /*
         ArrayList<Response> smoc8CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC8,"rpc",msg);
         logger.info("Count of ckpts stored by smoc8 --> {}",smoc8CkptList.size());
         mixedCkpts.addAll(smoc8CkptList);
