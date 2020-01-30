@@ -25,7 +25,6 @@ import tr.edu.itu.bbf.cloudcore.distributed.ipc.Response;
 
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class StateMachineWorker {
 
     @Value("${CKPT_EXCHANGE_SMOC3}")
     private String CKPT_EXCHANGE_SMOC3;
-
+/*
     @Value("${CKPT_EXCHANGE_SMOC4}")
     private String CKPT_EXCHANGE_SMOC4;
 
@@ -84,7 +83,7 @@ public class StateMachineWorker {
     private String CKPT_EXCHANGE_SMOC14;
 
     @Value("${CKPT_EXCHANGE_SMOC15}")
-    private String CKPT_EXCHANGE_SMOC15;
+    private String CKPT_EXCHANGE_SMOC15;*/
 
     private ArrayList<Response> mixedCkpts;
     private ArrayList<Response> sequentialCktps;
@@ -139,6 +138,7 @@ public class StateMachineWorker {
         ArrayList<Response> smoc3CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC3,"rpc",msg);
         logger.info("Count of ckpts stored by smoc3 --> {}",smoc3CkptList.size());
         mixedCkpts.addAll(smoc3CkptList);
+/*
 
         ArrayList<Response> smoc4CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC4,"rpc",msg);
         logger.info("Count of ckpts stored by smoc4 --> {}",smoc4CkptList.size());
@@ -187,6 +187,7 @@ public class StateMachineWorker {
         ArrayList<Response> smoc15CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC15,"rpc",msg);
         logger.info("Count of ckpts stored by smoc15 --> {}",smoc15CkptList.size());
         mixedCkpts.addAll(smoc15CkptList);
+*/
 
         logger.info("Count of ckpts stored by all smocs --> {}",mixedCkpts.size());
     }
