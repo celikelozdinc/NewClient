@@ -41,7 +41,6 @@ public class RabbitConfig {
     @Value("${CKPT_EXCHANGE_SMOC11}")
     private String CKPT_EXCHANGE_SMOC11;
 
-        /*
     @Value("${CKPT_EXCHANGE_SMOC12}")
     private String CKPT_EXCHANGE_SMOC12;
 
@@ -52,7 +51,7 @@ public class RabbitConfig {
     private String CKPT_EXCHANGE_SMOC14;
 
     @Value("${CKPT_EXCHANGE_SMOC15}")
-    private String CKPT_EXCHANGE_SMOC15;*/
+    private String CKPT_EXCHANGE_SMOC15;
 
     @Bean
     DirectExchange smoc1_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC1); }
@@ -87,7 +86,6 @@ public class RabbitConfig {
     @Bean
     DirectExchange smoc11_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC11); }
 
-        /*
     @Bean
     DirectExchange smoc12_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC12); }
 
@@ -100,6 +98,5 @@ public class RabbitConfig {
     @Bean
     DirectExchange smoc15_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC15); }
 
-*/
 
 }
