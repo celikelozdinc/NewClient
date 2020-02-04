@@ -29,18 +29,18 @@ RUN \
   rm -rf /var/cache/apk*
 VOLUME ["/data"]
 EXPOSE 27017
-CMD [ "/usr/bin/mongod" , "--bind_ip", "0.0.0.0"]
+#CMD [ "/usr/bin/mongod" , "--bind_ip", "0.0.0.0"]
 
 
 # Spring Boot #
 ARG SPRINGBOOT_HOME=/opt/statemachineapp
 COPY out/artifacts/NewClient_jar/ $SPRINGBOOT_HOME/NewClient_jar/
+# Copy reporting tools #
+COPY newclient/report.sh  $SPRINGBOOT_HOME/
+RUN chmod +x $SPRINGBOOT_HOME/report.sh
+# Change Directory #
+WORKDIR $SPRINGBOOT_HOME
 # Copy entrypoint script #
 COPY newclient/start_services.sh  $SPRINGBOOT_HOME/
 RUN chmod +x $SPRINGBOOT_HOME/start_services.sh
-# Copy reporting tools #
-COPY newclient/duration_report.sh  $SPRINGBOOT_HOME/
-COPY newclient/memory_report.sh $SPRINGBOOT_HOME/
-RUN chmod +x $SPRINGBOOT_HOME/duration_report.sh
-RUN chmod +x $SPRINGBOOT_HOME/memory_report.sh
-WORKDIR $SPRINGBOOT_HOME
+CMD ["/opt/statemachineapp/start_services.sh"]

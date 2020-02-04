@@ -1,2 +1,5 @@
 #!/bin/bash
-/usr/bin/java -Dtimesleep=1000 -jar NewClient_jar/NewClient.jar
+echo "Starting mongodb database service..."
+/usr/bin/mongod --fork --logpath /var/log/mongod.log --bind_ip 0.0.0.0 > /dev/null
+echo "Starting statemachine jar and redirecting the output to log file..."
+/usr/bin/java -Dtimesleep=1000 -jar NewClient_jar/NewClient.jar > log
