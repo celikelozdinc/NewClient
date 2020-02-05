@@ -10,6 +10,8 @@ services:
     tty: true
     stdin_open: true
     environment:
+      - QUEUE=${QUEUE}
+      - EVENT_QUEUE=${EVENT_QUEUE}
       - CKPT_EXCHANGE_SMOC1=${SMOC1}
       - CKPT_EXCHANGE_SMOC2=${SMOC2}
       - CKPT_EXCHANGE_SMOC3=${SMOC3}
