@@ -2,6 +2,7 @@ package tr.edu.itu.bbf.cloudcore.distributed.service;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
+import org.apache.curator.framework.CuratorFramework;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,6 +90,12 @@ public class StateMachineWorker {
 
     private ArrayList<Response> mixedCkpts;
     private ArrayList<Response> sequentialCktps;
+
+    @Autowired
+    private ServiceGateway serviceGateway;
+
+    @Autowired
+    private CuratorFramework sharedCuratorClient;
 
     private static final ThreadLocal<Kryo> kryoThreadLocal = new ThreadLocal<Kryo>() {
         @NotNull

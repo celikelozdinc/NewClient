@@ -1,5 +1,10 @@
 package tr.edu.itu.bbf.cloudcore.distributed.config;
 
+import org.apache.curator.RetryPolicy;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.imps.CuratorFrameworkState;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +33,36 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
 
     /** Default Constructor **/
     public StateMachineConfig() { }
+
+    @Bean
+    public CuratorFramework curatorClient() throws Exception {
+        String zkConnectionString = "zookeeper:2181";
+        RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
+        CuratorFramework client = CuratorFrameworkFactory.builder()
+                .defaultData(new byte[0])
+                .retryPolicy(retryPolicy)
+                .connectString(zkConnectionString)
+                .build();
+        client.start();
+        CuratorFrameworkState state = client.getState();
+        System.out.println("curatorClient state after initialization ----> " + state.name());
+        return client;
+    }
+
+    @Bean
+    public CuratorFramework sharedCuratorClient() throws Exception {
+        String zkConnectionString = "zookeeper:2181";
+        RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
+        CuratorFramework client = CuratorFrameworkFactory.builder()
+                .defaultData(new byte[0])
+                .retryPolicy(retryPolicy)
+                .connectString(zkConnectionString)
+                .build();
+        client.start();
+        CuratorFrameworkState state = client.getState();
+        logger.info("***********sharedCuratorClient state after initialization ----> " + state.name());
+        return client;
+    }
 
 
     @Override
