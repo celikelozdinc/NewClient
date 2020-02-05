@@ -38,6 +38,7 @@ public class Receiver {
         logger.info(" +++++++++ POSTCONTRUCT of RECEIVER ++++++++++");
     }
 
+    /*
     @RabbitListener(queues = "${QUEUE}")
     public ArrayList<Response> process(CkptMessage msg) throws UnknownHostException {
         InetAddress localhost = InetAddress.getLocalHost();
@@ -51,10 +52,9 @@ public class Receiver {
         Message<String> getMessage = MessageBuilder
                 .withPayload("PAYLOAD")
                 .build();
-        /*
-        List<CheckpointDbObject> list = serviceGateway.getCheckpoint(getMessage);
-        logger.info("#CKPTs returned from database = {}",list.size());
-         */
+
+        //List<CheckpointDbObject> list = serviceGateway.getCheckpoint(getMessage);
+        //logger.info("#CKPTs returned from database = {}",list.size());
 
         List<CheckpointDbObject> list = serviceGateway.getCKPTsFromMemory(getMessage);
         logger.info("#CKPTs returned  = {}",list.size());
@@ -71,17 +71,18 @@ public class Receiver {
                 Response response = new Response(dbObject.getEventNumber(),dbObject.getSourceState(),dbObject.getProcessedEvent(),dbObject.getTargetState());
                 responseList.add(response);
             }
-            /*
-            return "---> SMOC context  is "+dbObject.getContext() ;
-            return "---> Receiver is "+hostname ;
-             */
+            //return "---> SMOC context  is "+dbObject.getContext() ;
+            //return "---> Receiver is "+hostname ;
+
         }
         else{
             logger.info(" ---- EMPTY CKPT LIST WILL BE RETURNED ----");
         }
         return responseList;
     }
+    */
 
+    /*
     @RabbitListener(queues = "${EVENT_QUEUE}")
     public String handleEvent(EventMessage msg) throws Exception {
         logger.info("***************");
@@ -90,7 +91,6 @@ public class Receiver {
         String event = msg.getEvent();
         String hostname = System.getenv("HOSTNAME");
         Integer eventNumber = msg.getEventNumber();
-        /* sleep time is parametrized */
         int timeSleep = Integer.parseInt(System.getProperty("timesleep"));
         //pass timeSleep = 0
         //worker.ProcessEvent(event,eventNumber,0);
@@ -100,7 +100,7 @@ public class Receiver {
         logger.info("***************");
         return reply;
     }
-
+    */
 
     public void sleep(Long sleepTime){
         try {
