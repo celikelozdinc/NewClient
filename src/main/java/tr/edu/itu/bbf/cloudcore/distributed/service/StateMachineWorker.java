@@ -318,7 +318,7 @@ public class StateMachineWorker {
     }
 
     public void sendPayEvent(@NotNull String event, Integer eventNumber, int timeSleep) throws Exception {
-        logger.info("{}.event will be processed",eventNumber);
+        logger.info("PAY:: {}.event will be processed",eventNumber);
         event_eventNumber.put(eventNumber,event);
 
         Message<Events> messagePay = MessageBuilder
@@ -351,7 +351,7 @@ public class StateMachineWorker {
     }
 
     public void sendReceiveEvent(@NotNull String event, Integer eventNumber, int timeSleep) throws Exception {
-        logger.info("{}.event will be processed",eventNumber);
+        logger.info("RECEIVE::{}.event will be processed",eventNumber);
         event_eventNumber.put(eventNumber,event);
 
         Message<Events> messageReceive = MessageBuilder
@@ -383,7 +383,7 @@ public class StateMachineWorker {
 
     public void sendStartFromScratchEvent(@NotNull String event, Integer eventNumber, int timeSleep) throws Exception {
         //numberOfEvents = numberOfEvents + 1;
-        logger.info("{}.event will be processed",eventNumber);
+        logger.info("STARTFROMSCRATCH::{}.event will be processed",eventNumber);
         event_eventNumber.put(eventNumber,event);
 
         Message<Events> messageStartFromScratch = MessageBuilder

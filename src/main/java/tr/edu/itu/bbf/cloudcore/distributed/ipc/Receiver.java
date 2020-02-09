@@ -55,7 +55,7 @@ public class Receiver {
         boolean result = worker.ProcessEvent(event,eventNumber,0);
         String reply = "";
         if (result){
-            String ipAddr = InetAddress. getLocalHost().getAddress().toString();
+            String ipAddr = InetAddress. getLocalHost().getHostAddress();
             reply = "This is reply from "+ ipAddr +" -> newclient_" + hostname + " after event " + event;
         }
         else{
