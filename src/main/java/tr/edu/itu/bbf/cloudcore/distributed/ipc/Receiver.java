@@ -45,6 +45,7 @@ public class Receiver {
         logger.info("***************");
         logger.info("Message received from __{}__ process.",msg.getSender());
         String event = msg.getEvent();
+        logger.info("Event  __{}__ will be processed.",event);
         String hostname = System.getenv("HOSTNAME");
         Integer eventNumber = msg.getEventNumber();
         int timeSleep = Integer.parseInt(System.getProperty("timesleep"));
