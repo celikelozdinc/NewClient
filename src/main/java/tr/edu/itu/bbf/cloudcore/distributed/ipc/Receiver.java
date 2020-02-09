@@ -50,7 +50,7 @@ public class Receiver {
         Integer eventNumber = msg.getEventNumber();
         int timeSleep = Integer.parseInt(System.getProperty("timesleep"));
         //pass timeSleep = 0
-        worker.ProcessEvent(event,eventNumber,0);
+        worker.ProcessEvent(event,eventNumber,timeSleep);
         String reply = "This is reply from newclient_" + hostname + " after event " + event;
         logger.info("Send this message back to smoc __{}__",reply);
         logger.info("***************");
