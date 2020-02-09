@@ -38,7 +38,25 @@ public class Receiver {
         logger.info(" +++++++++ POSTCONTRUCT of RECEIVER ++++++++++");
     }
 
-    /*
+
+    @RabbitListener(queues = "${EVENT_QUEUE}")
+    public String handleEvent(EventMessage msg) throws Exception {
+        logger.info("***************");
+        logger.info("***************");
+        logger.info("Message received from __{}__ process.",msg.getSender());
+        String event = msg.getEvent();
+        String hostname = System.getenv("HOSTNAME");
+        Integer eventNumber = msg.getEventNumber();
+        int timeSleep = Integer.parseInt(System.getProperty("timesleep"));
+        //pass timeSleep = 0
+        worker.ProcessEvent(event,eventNumber,0);
+        String reply = "This is reply from newclient_" + hostname + " after event " + event;
+        logger.info("Send this message back to smoc __{}__",reply);
+        logger.info("***************");
+        logger.info("***************");
+        return reply;
+    }
+
     @RabbitListener(queues = "${QUEUE}")
     public ArrayList<Response> process(CkptMessage msg) throws UnknownHostException {
         InetAddress localhost = InetAddress.getLocalHost();
@@ -52,9 +70,10 @@ public class Receiver {
         Message<String> getMessage = MessageBuilder
                 .withPayload("PAYLOAD")
                 .build();
-
-        //List<CheckpointDbObject> list = serviceGateway.getCheckpoint(getMessage);
-        //logger.info("#CKPTs returned from database = {}",list.size());
+        /*
+        List<CheckpointDbObject> list = serviceGateway.getCheckpoint(getMessage);
+        logger.info("#CKPTs returned from database = {}",list.size());
+         */
 
         List<CheckpointDbObject> list = serviceGateway.getCKPTsFromMemory(getMessage);
         logger.info("#CKPTs returned  = {}",list.size());
@@ -71,33 +90,15 @@ public class Receiver {
                 Response response = new Response(dbObject.getEventNumber(),dbObject.getSourceState(),dbObject.getProcessedEvent(),dbObject.getTargetState());
                 responseList.add(response);
             }
-            //return "---> SMOC context  is "+dbObject.getContext() ;
-            //return "---> Receiver is "+hostname ;
-
+            /*
+            return "---> SMOC context  is "+dbObject.getContext() ;
+            return "---> Receiver is "+hostname ;
+             */
         }
         else{
             logger.info(" ---- EMPTY CKPT LIST WILL BE RETURNED ----");
         }
         return responseList;
-    }
-    */
-
-    @RabbitListener(queues = "${EVENT_QUEUE}")
-    public String handleEvent(EventMessage msg) throws Exception {
-        logger.info("***************");
-        logger.info("***************");
-        logger.info("Message received from __{}__ process.",msg.getSender());
-        String event = msg.getEvent();
-        String hostname = System.getenv("HOSTNAME");
-        Integer eventNumber = msg.getEventNumber();
-        int timeSleep = Integer.parseInt(System.getProperty("timesleep"));
-        //pass timeSleep = 0
-        worker.ProcessEvent(event,eventNumber,0);
-        String reply = "This is reply from " + hostname + " after event " + event;
-        logger.info("Send this message back to smoc __{}__",reply);
-        logger.info("***************");
-        logger.info("***************");
-        return reply;
     }
 
 

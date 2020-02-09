@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfig {
 
-    /*
     @Value("${CKPT_EXCHANGE_SMOC1}")
     private String CKPT_EXCHANGE_SMOC1;
 
@@ -21,6 +20,7 @@ public class RabbitConfig {
     @Value("${CKPT_EXCHANGE_SMOC3}")
     private String CKPT_EXCHANGE_SMOC3;
 
+    /*
     @Value("${CKPT_EXCHANGE_SMOC4}")
     private String CKPT_EXCHANGE_SMOC4;
 
@@ -64,7 +64,38 @@ public class RabbitConfig {
     @Value("${EVENT_EXCHANGE}")
     private String EVENT_EXCHANGE;
 
-    /*
+    @Value("${QUEUE}")
+    private String IPC_QUEUE;
+
+    @Value("${EXCHANGE}")
+    private String IPC_EXCHANGE;
+
+    @Bean
+    Queue eventQueue(){ return new Queue(EVENT_QUEUE, false);}
+
+    @Bean
+    DirectExchange eventExchange(){return new DirectExchange(EVENT_EXCHANGE);}
+
+    @Bean
+    Binding bindingForEvent(Queue eventQueue, DirectExchange eventExchange){
+        return BindingBuilder.bind(eventQueue).to(eventExchange).with("rpc");
+    }
+
+    @Bean
+    Queue ipcQueue() {
+        return new Queue(IPC_QUEUE, false);
+    }
+
+    @Bean
+    DirectExchange ipcExchange() {
+        return new DirectExchange(IPC_EXCHANGE);
+    }
+
+    @Bean
+    Binding binding(Queue ipcQueue, DirectExchange ipcExchange) {
+        return BindingBuilder.bind(ipcQueue).to(ipcExchange).with("rpc");
+    }
+
     @Bean
     DirectExchange smoc1_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC1); }
 
@@ -74,6 +105,7 @@ public class RabbitConfig {
     @Bean
     DirectExchange smoc3_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC3); }
 
+    /*
     @Bean
     DirectExchange smoc4_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC4); }
 
@@ -112,15 +144,5 @@ public class RabbitConfig {
     */
 
 
-    @Bean
-    Queue eventQueue(){ return new Queue(EVENT_QUEUE, false);}
-
-    @Bean
-    DirectExchange eventExchange(){return new DirectExchange(EVENT_EXCHANGE);}
-
-    @Bean
-    Binding bindingForEvent(Queue eventQueue, DirectExchange eventExchange){
-        return BindingBuilder.bind(eventQueue).to(eventExchange).with("rpc");
-    }
 
 }

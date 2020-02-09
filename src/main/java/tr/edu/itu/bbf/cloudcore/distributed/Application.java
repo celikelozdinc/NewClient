@@ -35,30 +35,33 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args){
 
-        /* Read CKPT information from other smocs */
-        /*
-        long startTime = System.currentTimeMillis();
-        try {
-            worker.startCommunication();
-            worker.prepareCkpts();
-            worker.applyCkpts();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        String hostname = System.getenv("HOSTNAME");
+        if (hostname.equals("smoc4")){
+            logger.info("Will read CKPTs from other smocs...");
+            /* Read CKPT information from other smocs */
+            long startTime = System.currentTimeMillis();
+            try {
+                worker.startCommunication();
+                worker.prepareCkpts();
+                worker.applyCkpts();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            long endTime = System.currentTimeMillis();
+            float delta =((float) (endTime - startTime)/1000);
+            logger.warn("Applied all CKPTs in {} seconds",delta);
+            logger.warn("PID@HOSTNAME is {}",ManagementFactory.getRuntimeMXBean().getName());
         }
-        long endTime = System.currentTimeMillis();
-        float delta =((float) (endTime - startTime)/1000);
-        logger.warn("Applied all CKPTs in {} seconds",delta);
-        logger.warn("PID@HOSTNAME is {}",ManagementFactory.getRuntimeMXBean().getName());
-         */
+        else {
+            InputStream stream = System.in;
+            Scanner scanner = new Scanner(stream);
 
-        InputStream stream = System.in;
-        Scanner scanner = new Scanner(stream);
-
-        while(true){
-            System.out.println("Waiting events to be processed...");
-            String event = scanner.next();
+            while (true) {
+                System.out.println("Waiting events to be processed...");
+                String event = scanner.next();
+            }
         }
 
 
