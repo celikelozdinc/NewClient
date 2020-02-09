@@ -41,6 +41,7 @@ public class Receiver {
 
     @RabbitListener(queues = "${EVENT_QUEUE}")
     public String handleEvent(EventMessage msg) throws Exception {
+        System.out.println("\n\n");
         logger.info("***************");
         logger.info("***************");
         logger.info("Message received from __{}__ process.",msg.getSender());
@@ -55,6 +56,7 @@ public class Receiver {
         logger.info("Send this message back to smoc __{}__",reply);
         logger.info("***************");
         logger.info("***************");
+        System.out.println("\n\n");
         return reply;
     }
 
@@ -71,10 +73,7 @@ public class Receiver {
         Message<String> getMessage = MessageBuilder
                 .withPayload("PAYLOAD")
                 .build();
-        /*
-        List<CheckpointDbObject> list = serviceGateway.getCheckpoint(getMessage);
-        logger.info("#CKPTs returned from database = {}",list.size());
-         */
+
 
         List<CheckpointDbObject> list = serviceGateway.getCKPTsFromMemory(getMessage);
         logger.info("#CKPTs returned  = {}",list.size());
@@ -91,10 +90,6 @@ public class Receiver {
                 Response response = new Response(dbObject.getEventNumber(),dbObject.getSourceState(),dbObject.getProcessedEvent(),dbObject.getTargetState());
                 responseList.add(response);
             }
-            /*
-            return "---> SMOC context  is "+dbObject.getContext() ;
-            return "---> Receiver is "+hostname ;
-             */
         }
         else{
             logger.info(" ---- EMPTY CKPT LIST WILL BE RETURNED ----");

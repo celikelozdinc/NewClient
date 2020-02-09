@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfig {
-
+    /*
     @Value("${CKPT_EXCHANGE_SMOC1}")
     private String CKPT_EXCHANGE_SMOC1;
 
@@ -20,7 +20,6 @@ public class RabbitConfig {
     @Value("${CKPT_EXCHANGE_SMOC3}")
     private String CKPT_EXCHANGE_SMOC3;
 
-    /*
     @Value("${CKPT_EXCHANGE_SMOC4}")
     private String CKPT_EXCHANGE_SMOC4;
 
@@ -96,6 +95,7 @@ public class RabbitConfig {
         return BindingBuilder.bind(ipcQueue).to(ipcExchange).with("rpc");
     }
 
+    /*
     @Bean
     DirectExchange smoc1_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC1); }
 
@@ -105,7 +105,7 @@ public class RabbitConfig {
     @Bean
     DirectExchange smoc3_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC3); }
 
-    /*
+
     @Bean
     DirectExchange smoc4_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC4); }
 

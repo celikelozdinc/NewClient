@@ -39,6 +39,7 @@ public class Application implements CommandLineRunner {
         if (hostname.equals("smoc4")){
             logger.info("Will read CKPTs from other smocs...");
             /* Read CKPT information from other smocs */
+            /*
             long startTime = System.currentTimeMillis();
             try {
                 worker.startCommunication();
@@ -53,6 +54,7 @@ public class Application implements CommandLineRunner {
             float delta =((float) (endTime - startTime)/1000);
             logger.warn("Applied all CKPTs in {} seconds",delta);
             logger.warn("PID@HOSTNAME is {}",ManagementFactory.getRuntimeMXBean().getName());
+             */
         }
         else {
             InputStream stream = System.in;
