@@ -53,6 +53,7 @@ public class Receiver {
         //int timeSleep = Integer.parseInt(System.getProperty("timesleep"));
         //pass timeSleep = 0
         boolean result = worker.ProcessEvent(event,eventNumber,0);
+        sleep((long) 2);
         String reply = "";
         if (result){
             String ipAddr = InetAddress. getLocalHost().getHostAddress();
