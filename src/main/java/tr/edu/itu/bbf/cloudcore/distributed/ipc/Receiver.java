@@ -17,6 +17,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.net.InetAddress;
 
 @Component
 public class Receiver {
@@ -49,10 +50,17 @@ public class Receiver {
         logger.info("Event  __{}__ will be processed.",event);
         String hostname = System.getenv("HOSTNAME");
         Integer eventNumber = msg.getEventNumber();
-        int timeSleep = Integer.parseInt(System.getProperty("timesleep"));
+        //int timeSleep = Integer.parseInt(System.getProperty("timesleep"));
         //pass timeSleep = 0
-        worker.ProcessEvent(event,eventNumber,0);
-        String reply = "This is reply from newclient_" + hostname + " after event " + event;
+        boolean result = worker.ProcessEvent(event,eventNumber,0);
+        String reply = "";
+        if (result){
+            String ipAddr = InetAddress. getLocalHost().getAddress().toString();
+            reply = "This is reply from "+ ipAddr +" -> newclient_" + hostname + " after event " + event;
+        }
+        else{
+            reply = "NULL MESSAGE from " + hostname;
+        }
         logger.info("Send this message back to smoc __{}__",reply);
         logger.info("***************");
         logger.info("***************");
