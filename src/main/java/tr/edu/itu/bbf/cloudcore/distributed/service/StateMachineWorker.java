@@ -2,6 +2,7 @@ package tr.edu.itu.bbf.cloudcore.distributed.service;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import org.apache.curator.framework.CuratorFramework;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -26,11 +27,12 @@ import tr.edu.itu.bbf.cloudcore.distributed.ipc.Response;
 
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.UUID;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Service
 public class StateMachineWorker {
@@ -41,6 +43,8 @@ public class StateMachineWorker {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+
+    /*
     @Value("${CKPT_EXCHANGE_SMOC1}")
     private String CKPT_EXCHANGE_SMOC1;
 
@@ -50,7 +54,6 @@ public class StateMachineWorker {
     @Value("${CKPT_EXCHANGE_SMOC3}")
     private String CKPT_EXCHANGE_SMOC3;
 
-    /*
     @Value("${CKPT_EXCHANGE_SMOC4}")
     private String CKPT_EXCHANGE_SMOC4;
 
@@ -88,6 +91,8 @@ public class StateMachineWorker {
     private String CKPT_EXCHANGE_SMOC15;
     */
 
+    private Dictionary event_eventNumber;
+
     private ArrayList<Response> mixedCkpts;
     private ArrayList<Response> sequentialCktps;
 
@@ -117,11 +122,13 @@ public class StateMachineWorker {
         logger.info("+++++StateMachineWorker::Constructor+++++");
     }
 
+
     @PostConstruct
     public void init() {
         logger.info("+++++StateMachineWorker::PostConstruct+++++");
         stateMachine.start();
         logger.info("SMOC __{}__ is started. From now on, events can be processed.",stateMachine.getUuid().toString());
+        event_eventNumber = new Hashtable();
         mixedCkpts = new ArrayList<Response>();
         sequentialCktps = new ArrayList<Response>();
     }
@@ -136,6 +143,8 @@ public class StateMachineWorker {
         msg.setHostname(hostname);
         msg.setIpAddr(ipAddr);
 
+        /*
+
         ArrayList<Response> smoc1CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC1,"rpc",msg);
         logger.info("Count of ckpts stored by smoc1 --> {}",smoc1CkptList.size());
         mixedCkpts.addAll(smoc1CkptList);
@@ -148,7 +157,6 @@ public class StateMachineWorker {
         logger.info("Count of ckpts stored by smoc3 --> {}",smoc3CkptList.size());
         mixedCkpts.addAll(smoc3CkptList);
 
-       /*
         ArrayList<Response> smoc4CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC4,"rpc",msg);
         logger.info("Count of ckpts stored by smoc4 --> {}",smoc4CkptList.size());
         mixedCkpts.addAll(smoc4CkptList);
@@ -196,11 +204,15 @@ public class StateMachineWorker {
         ArrayList<Response> smoc15CkptList = (ArrayList<Response>) rabbitTemplate.convertSendAndReceive(CKPT_EXCHANGE_SMOC15,"rpc",msg);
         logger.info("Count of ckpts stored by smoc15 --> {}",smoc15CkptList.size());
         mixedCkpts.addAll(smoc15CkptList);
-        */
+
 
         logger.info("Count of ckpts stored by all smocs --> {}",mixedCkpts.size());
+
+         */
+
     }
 
+    /*
     public void prepareCkpts(){
 
         Integer size = mixedCkpts.size();
@@ -222,7 +234,9 @@ public class StateMachineWorker {
         }
 
     }
+     */
 
+    /*
     public void applyCkpts() throws Exception {
         for(Response response: sequentialCktps){
             String event = response.getProcessedEvent();
@@ -249,6 +263,8 @@ public class StateMachineWorker {
             }
         }
     }
+    */
+
 
     @SuppressWarnings("unchecked")
     public StateMachineContext<States, Events> deserializeStateMachineContext(String reply) {
@@ -281,19 +297,68 @@ public class StateMachineWorker {
          */
     }
 
-    public void sendPayEvent(@NotNull String event, int timeSleep)throws Exception {
+    public void ProcessEvent(String event, Integer eventNumber, int timeSleep) throws Exception {
+        switch(event){
+            case "Pay": case "pay": case "PAY":
+                System.out.print("\n\n\n\n\n");
+                sendPayEvent(event, eventNumber,timeSleep);
+                System.out.print("\n\n\n\n\n");
+                break;
+            case "Receive": case "receive": case "RECEIVE":
+                System.out.print("\n\n\n\n\n");
+                sendReceiveEvent(event, eventNumber,timeSleep);
+                System.out.print("\n\n\n\n\n");
+                break;
+            case "StartFromScratch": case "startfromscratch": case"STARTFROMSCRATCH":
+                System.out.print("\n\n\n\n\n");
+                sendStartFromScratchEvent(event, eventNumber,timeSleep);
+                System.out.print("\n\n\n\n\n");
+                break;
+            default:
+                System.out.println("Please send one of the events below.");
+                System.out.println("Pay/Receive/StartFromScratch");
+                break;
+        }
+
+    }
+
+    public void sendPayEvent(@NotNull String event, Integer eventNumber, int timeSleep) throws Exception {
+        logger.info("{}.event will be processed",eventNumber);
+        event_eventNumber.put(eventNumber,event);
+
         Message<Events> messagePay = MessageBuilder
                 .withPayload(Events.PAY)
                 .setHeader("timeSleep", timeSleep)
                 .setHeader("machineId", stateMachine.getUuid())
                 .setHeader("source", "UNPAID")
                 .setHeader("processedEvent", event)
-                .setHeader("target", "WAITING_FOR_RECEIVE")
+                .setHeader("target","WAITING_FOR_RECEIVE")
                 .build();
         stateMachine.sendEvent(messagePay);
+
+
+        /* Prepare message for CKPT */
+        Message<String> ckptMessage = MessageBuilder
+                .withPayload("PAY")
+                .setHeader("machineId", stateMachine.getUuid())
+                .setHeader("source", "UNPAID")
+                .setHeader("processedEvent", event)
+                .setHeader("target", "WAITING_FOR_RECEIVE")
+                .setHeader("context", serializeStateMachineContext())
+                .setHeader("eventNumber",eventNumber)
+                .build();
+        /*
+        Stores on mongodb database
+        serviceGateway.setCheckpoint(ckptMessage);
+        */
+        serviceGateway.storeCKPTInMemory(ckptMessage);
+
     }
 
-    public void sendReceiveEvent(@NotNull String event, int timeSleep) throws Exception {
+    public void sendReceiveEvent(@NotNull String event, Integer eventNumber, int timeSleep) throws Exception {
+        logger.info("{}.event will be processed",eventNumber);
+        event_eventNumber.put(eventNumber,event);
+
         Message<Events> messageReceive = MessageBuilder
                 .withPayload(Events.RECEIVE)
                 .setHeader("timeSleep", timeSleep)
@@ -303,18 +368,60 @@ public class StateMachineWorker {
                 .setHeader("target", "DONE")
                 .build();
         stateMachine.sendEvent(messageReceive);
+
+        Message<String> ckptMessage = MessageBuilder
+                .withPayload("RCV")
+                .setHeader("machineId", stateMachine.getUuid())
+                .setHeader("source", "WAITING_FOR_RECEIVE")
+                .setHeader("processedEvent", event)
+                .setHeader("target", "DONE")
+                .setHeader("context", serializeStateMachineContext())
+                .setHeader("eventNumber",eventNumber)
+                .build();
+        /*
+        Stores on mongodb database
+        serviceGateway.setCheckpoint(ckptMessage);
+         */
+        serviceGateway.storeCKPTInMemory(ckptMessage);
+
     }
 
-    public void sendStartFromScratchEvent(@NotNull String event, int timeSleep) throws Exception {
+    public void sendStartFromScratchEvent(@NotNull String event, Integer eventNumber, int timeSleep) throws Exception {
+        //numberOfEvents = numberOfEvents + 1;
+        logger.info("{}.event will be processed",eventNumber);
+        event_eventNumber.put(eventNumber,event);
+
         Message<Events> messageStartFromScratch = MessageBuilder
                 .withPayload(Events.STARTFROMSCRATCH)
                 .setHeader("timeSleep", timeSleep)
                 .setHeader("machineId", stateMachine.getUuid())
                 .setHeader("source", "DONE")
                 .setHeader("processedEvent", event)
-                .setHeader("target", "UNPAID")
+                .setHeader("target","UNPAID")
                 .build();
         stateMachine.sendEvent(messageStartFromScratch);
+
+        Message<String> ckptMessage = MessageBuilder
+                .withPayload("SFS")
+                .setHeader("machineId", stateMachine.getUuid())
+                .setHeader("source", "DONE")
+                .setHeader("processedEvent", event)
+                .setHeader("target", "UNPAID")
+                .setHeader("context", serializeStateMachineContext())
+                .setHeader("eventNumber",eventNumber)
+                .build();
+
+        /*
+        Stores on mongodb database
+        serviceGateway.setCheckpoint(ckptMessage);
+         */
+        serviceGateway.storeCKPTInMemory(ckptMessage);
+
     }
+
+    public  String serializeStateMachineContext(){
+        return "MOCK_SMOC_CONTEXT";
+    }
+
 
 }

@@ -1,6 +1,9 @@
 package tr.edu.itu.bbf.cloudcore.distributed.ipc;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfig {
 
+    /*
     @Value("${CKPT_EXCHANGE_SMOC1}")
     private String CKPT_EXCHANGE_SMOC1;
 
@@ -17,7 +21,6 @@ public class RabbitConfig {
     @Value("${CKPT_EXCHANGE_SMOC3}")
     private String CKPT_EXCHANGE_SMOC3;
 
-    /*
     @Value("${CKPT_EXCHANGE_SMOC4}")
     private String CKPT_EXCHANGE_SMOC4;
 
@@ -55,6 +58,13 @@ public class RabbitConfig {
     private String CKPT_EXCHANGE_SMOC15;
     */
 
+    @Value("${EVENT_QUEUE}")
+    private String EVENT_QUEUE;
+
+    @Value("${EVENT_EXCHANGE}")
+    private String EVENT_EXCHANGE;
+
+    /*
     @Bean
     DirectExchange smoc1_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC1); }
 
@@ -64,7 +74,6 @@ public class RabbitConfig {
     @Bean
     DirectExchange smoc3_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC3); }
 
-    /*
     @Bean
     DirectExchange smoc4_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC4); }
 
@@ -101,5 +110,17 @@ public class RabbitConfig {
     @Bean
     DirectExchange smoc15_Ckpt_Exchange() { return new DirectExchange(CKPT_EXCHANGE_SMOC15); }
     */
+
+
+    @Bean
+    Queue eventQueue(){ return new Queue(EVENT_QUEUE, false);}
+
+    @Bean
+    DirectExchange eventExchange(){return new DirectExchange(EVENT_EXCHANGE);}
+
+    @Bean
+    Binding bindingForEvent(Queue eventQueue, DirectExchange eventExchange){
+        return BindingBuilder.bind(eventQueue).to(eventExchange).with("rpc");
+    }
 
 }

@@ -14,8 +14,10 @@ import tr.edu.itu.bbf.cloudcore.distributed.persist.CheckpointRepository;
 import tr.edu.itu.bbf.cloudcore.distributed.service.StateMachineWorker;
 
 
+import java.io.InputStream;
 import java.lang.management.ManagementFactory;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 @SpringBootApplication
 @ImportResource({"classpath*:channel-config.xml"})
@@ -34,15 +36,12 @@ public class Application implements CommandLineRunner {
     public void run(String... args){
 
         /* Read CKPT information from other smocs */
-
+        /*
         long startTime = System.currentTimeMillis();
         try {
             worker.startCommunication();
             worker.prepareCkpts();
             worker.applyCkpts();
-            //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply);
-            //StateMachineContext<States,Events> context = worker.deserializeStateMachineContext(reply.getBytes());
-            //logger.info("********* Deserialize context = {}",context.getState().toString());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -52,6 +51,17 @@ public class Application implements CommandLineRunner {
         float delta =((float) (endTime - startTime)/1000);
         logger.warn("Applied all CKPTs in {} seconds",delta);
         logger.warn("PID@HOSTNAME is {}",ManagementFactory.getRuntimeMXBean().getName());
+         */
+
+        InputStream stream = System.in;
+        Scanner scanner = new Scanner(stream);
+
+        while(true){
+            System.out.println("Waiting events to be processed...");
+            String event = scanner.next();
+        }
+
+
 
     }
 

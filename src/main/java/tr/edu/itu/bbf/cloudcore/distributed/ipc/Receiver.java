@@ -82,7 +82,6 @@ public class Receiver {
     }
     */
 
-    /*
     @RabbitListener(queues = "${EVENT_QUEUE}")
     public String handleEvent(EventMessage msg) throws Exception {
         logger.info("***************");
@@ -93,14 +92,14 @@ public class Receiver {
         Integer eventNumber = msg.getEventNumber();
         int timeSleep = Integer.parseInt(System.getProperty("timesleep"));
         //pass timeSleep = 0
-        //worker.ProcessEvent(event,eventNumber,0);
+        worker.ProcessEvent(event,eventNumber,0);
         String reply = "This is reply from " + hostname + " after event " + event;
         logger.info("Send this message back to smoc __{}__",reply);
         logger.info("***************");
         logger.info("***************");
         return reply;
     }
-    */
+
 
     public void sleep(Long sleepTime){
         try {
