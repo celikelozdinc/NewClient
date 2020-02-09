@@ -297,19 +297,13 @@ public class StateMachineWorker {
     public void ProcessEvent(String event, Integer eventNumber, int timeSleep) throws Exception {
         switch(event){
             case "Pay": case "pay": case "PAY":
-                System.out.print("\n\n\n\n\n");
                 sendPayEvent(event, eventNumber,timeSleep);
-                System.out.print("\n\n\n\n\n");
                 break;
             case "Receive": case "receive": case "RECEIVE":
-                System.out.print("\n\n\n\n\n");
                 sendReceiveEvent(event, eventNumber,timeSleep);
-                System.out.print("\n\n\n\n\n");
                 break;
             case "StartFromScratch": case "startfromscratch": case"STARTFROMSCRATCH":
-                System.out.print("\n\n\n\n\n");
                 sendStartFromScratchEvent(event, eventNumber,timeSleep);
-                System.out.print("\n\n\n\n\n");
                 break;
             default:
                 System.out.println("Please send one of the events below.");
