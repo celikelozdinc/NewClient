@@ -42,7 +42,7 @@ public class Receiver {
 
     //@RabbitListener(queues = "${EVENT_QUEUE}")
     @RabbitListener(queues = "${EVENT_QUEUE_NEW}")
-    public void handleEvent(EventMessage msg) throws Exception {
+    public String handleEvent(EventMessage msg) throws Exception {
         System.out.println("\n\n");
         logger.info("***************");
         logger.info("***************");
@@ -67,7 +67,7 @@ public class Receiver {
         logger.info("***************");
         logger.info("***************");
         System.out.println("\n\n");
-        //return reply;
+        return reply;
     }
 
     @RabbitListener(queues = "${QUEUE}")
