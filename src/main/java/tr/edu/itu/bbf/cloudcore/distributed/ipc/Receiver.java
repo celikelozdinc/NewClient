@@ -70,6 +70,7 @@ public class Receiver {
         return reply;
     }
 
+    /*
     @RabbitListener(queues = "${QUEUE}")
     public ArrayList<Response> process(CkptMessage msg) throws UnknownHostException {
         InetAddress localhost = InetAddress.getLocalHost();
@@ -106,6 +107,7 @@ public class Receiver {
         }
         return responseList;
     }
+    */
 
 
     public void sleep(Long sleepTime){
