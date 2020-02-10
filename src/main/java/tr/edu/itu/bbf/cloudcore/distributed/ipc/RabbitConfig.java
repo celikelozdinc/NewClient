@@ -69,6 +69,24 @@ public class RabbitConfig {
     @Value("${EXCHANGE}")
     private String IPC_EXCHANGE;
 
+    @Value(("${EVENT_EXCHANGE_NEW}"))
+    private String EVENT_EXCHANGE_NEW;
+
+    @Value(("${EVENT_QUEUE_NEW}"))
+    private String EVENT_QUEUE_NEW;
+
+    @Bean
+    Queue eventQueue_New(){ return new Queue(EVENT_QUEUE_NEW, false);}
+
+    @Bean
+    DirectExchange eventExchange_New(){return new DirectExchange(EVENT_EXCHANGE_NEW);}
+
+    @Bean
+    Binding bindingForEvent_New(Queue eventQueue_New, DirectExchange eventExchange_New){
+        return BindingBuilder.bind(eventQueue_New).to(eventExchange_New).with("rpc");
+    }
+
+
     @Bean
     Queue eventQueue(){ return new Queue(EVENT_QUEUE, false);}
 

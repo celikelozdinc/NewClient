@@ -40,7 +40,8 @@ public class Receiver {
     }
 
 
-    @RabbitListener(queues = "${EVENT_QUEUE}")
+    //@RabbitListener(queues = "${EVENT_QUEUE}")
+    @RabbitListener(queues = "${EVENT_QUEUE_NEW}")
     public String handleEvent(EventMessage msg) throws Exception {
         System.out.println("\n\n");
         logger.info("***************");
@@ -53,7 +54,7 @@ public class Receiver {
         //int timeSleep = Integer.parseInt(System.getProperty("timesleep"));
         //pass timeSleep = 0
         boolean result = worker.ProcessEvent(event,eventNumber,0);
-        sleep((long) 2);
+        //sleep((long) 2);
         String reply = "";
         if (result){
             String ipAddr = InetAddress. getLocalHost().getHostAddress();
