@@ -57,6 +57,7 @@ public class RabbitConfig {
     private String CKPT_EXCHANGE_SMOC15;
     */
 
+    /*
     @Value("${EVENT_QUEUE}")
     private String EVENT_QUEUE;
 
@@ -68,6 +69,9 @@ public class RabbitConfig {
 
     @Value("${EXCHANGE}")
     private String IPC_EXCHANGE;
+
+     */
+
 
     @Value(("${EVENT_EXCHANGE_NEW}"))
     private String EVENT_EXCHANGE_NEW;
@@ -86,7 +90,7 @@ public class RabbitConfig {
         return BindingBuilder.bind(eventQueue_New).to(eventExchange_New).with("rpc");
     }
 
-
+    /*
     @Bean
     Queue eventQueue(){ return new Queue(EVENT_QUEUE, false);}
 
@@ -112,6 +116,9 @@ public class RabbitConfig {
     Binding binding(Queue ipcQueue, DirectExchange ipcExchange) {
         return BindingBuilder.bind(ipcQueue).to(ipcExchange).with("rpc");
     }
+
+
+     */
 
     /*
     @Bean
